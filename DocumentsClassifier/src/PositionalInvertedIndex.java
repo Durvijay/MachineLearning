@@ -1,30 +1,25 @@
 
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
 
 /**
  * @author Durvijay Sharma
- * @author Mangesh Adalinge
- * @author Surabhi Dixit
  */
-public class PositionalInvertedIndex{
- private HashMap<String, List<TokenDetails>> indexMap = new HashMap<>();
-	public PositionalInvertedIndex(){
+public class PositionalInvertedIndex {
+	private Map<String, List<TokenDetails>> indexMap = new HashMap<>();
+
+	public PositionalInvertedIndex() {
 		indexMap.clear();
 	}
-	
-	public HashMap<String, List<TokenDetails>> getIndexMap() {
+
+	public Map<String, List<TokenDetails>> getIndexMap() {
 		return indexMap;
 	}
 
-	public void setIndexMap(HashMap<String, List<TokenDetails>> indexMap) {
+	public void setIndexMap(Map<String, List<TokenDetails>> indexMap) {
 		this.indexMap = indexMap;
 	}
 
@@ -41,10 +36,8 @@ public class PositionalInvertedIndex{
 		TokenDetails docList = new TokenDetails(docID, wordPosition);
 
 		try {
-			// term=pStem.processToken(term);
 			if (indexMap.containsKey(term)) {
 				list = indexMap.get(term);
-
 				docList = list.get(list.size() - 1);
 				if (docList.getDocId() == docID) {
 					docList.setPosition(wordPosition);
@@ -55,14 +48,12 @@ public class PositionalInvertedIndex{
 					indexMap.put(term, list);
 				}
 			} else {
-
 				list.add(docList);
 				indexMap.put(term, list);
 			}
 
 		} catch (Exception e) {
 			Logger.getLogger(PositionalInvertedIndex.class.getName()).log(java.util.logging.Level.SEVERE, null, e);
-			System.out.print("addTerm  " + e);
 		}
 
 	}
@@ -92,21 +83,7 @@ public class PositionalInvertedIndex{
 	 * @return
 	 */
 	public String[] getDictionary() {
-		// TO-DO: fill an array of Strings with all the keys from the hashtable.
-		// Sort the array and return it.
-		String[] dictionary = new String[indexMap.size()];
-		Iterator it = indexMap.entrySet().iterator();
-		int i = 0;
-
-		while (it.hasNext()) {
-			Map.Entry pair = (Map.Entry) it.next();
-			dictionary[i] = pair.getKey().toString();
-
-			i++;
-
-		}
-		Arrays.sort(dictionary);
-		return dictionary;
+		return indexMap.keySet().stream().sorted().toArray(String[]::new);
 	}
 
 }

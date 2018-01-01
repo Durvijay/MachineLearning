@@ -1,39 +1,32 @@
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Scanner;
 
 public class FederalistPapersAuthorship {
-
+	
+	private static NaiveIndex naiveIndex=new NaiveIndex();
+	
 	public static void main(String[] args) throws IOException {
-		Scanner scr=new Scanner(System.in);
+		
+		String workingDir = System.getProperty("user.dir")+"/Federalpapers/";
+		
 		PositionalInvertedIndex pIndex=new PositionalInvertedIndex();
-		NaiveIndex naiveIndex=new NaiveIndex();
-		
-		
-	//	System.out.println("Enter the Number of training sets");
-//		int trainingSetSize=scr.nextInt();
 		int docId=0;
-/*		for (int i = 0; i < trainingSetSize; i++) {
-			System.out.println("Enter the training path no "+i);
-			Path trainingPath=Paths.get(scr.next());
-			System.out.println(docId);
-			docId=naiveIndex.indexDirectory(trainingPath,pIndex,docId);
-		}
-*/		
-		docId=naiveIndex.indexDirectory(Paths.get("C:/Users/DURVIJAY/Documents/Federalpapers/HAMILTON"),pIndex,docId);
-		docId=naiveIndex.indexDirectory(Paths.get("C:/Users/DURVIJAY/Documents/Federalpapers/HAMILTONANDMADISON"),pIndex,docId);
-		docId=naiveIndex.indexDirectory(Paths.get("C:/Users/DURVIJAY/Documents/Federalpapers/JAY"),pIndex,docId);
-		docId=naiveIndex.indexDirectory(Paths.get("C:/Users/DURVIJAY/Documents/Federalpapers/MADISON"),pIndex,docId);
-	//	docId=naiveIndex.indexDirectory(Paths.get("C:/Users/DURVIJAY/Documents/Federalpapers/Test"),pIndex,docId);
-		System.out.println("Total Docs :"+docId);
-	//	String rocResults=rClassifier.getRocchioResults(pIndex.getIndexMap());
-		docId=naiveIndex.indexDirectory(Paths.get("C:/Users/DURVIJAY/Documents/Federalpapers/HAMILTONORMADISON"),pIndex,docId);
-		RocchioClassifier rClassifier=new RocchioClassifier(pIndex,docId);
 		
-		rClassifier.calculateEuclidean(pIndex,docId,Paths.get("C:/Users/DURVIJAY/Documents/Federalpapers/HAMILTONORMADISON").getFileName().toString());
-
+		docId=indexDocuments(Paths.get(workingDir+"HAMILTON"),pIndex,docId);
+		docId=indexDocuments(Paths.get(workingDir+"HAMILTONANDMADISON"),pIndex,docId);
+		docId=indexDocuments(Paths.get(workingDir+"JAY"),pIndex,docId);
+		docId=indexDocuments(Paths.get(workingDir+"MADISON"),pIndex,docId);
+		indexDocuments(Paths.get(workingDir+"HAMILTONORMADISON"),pIndex,docId);
+		
+		RocchioClassifier rClassifier=new RocchioClassifier(pIndex);
+		
+		rClassifier.calculateEuclidean(Paths.get(workingDir+"HAMILTONORMADISON").getFileName().toString());
+		
+	}
+	
+	private static int indexDocuments(Path path, PositionalInvertedIndex pIndex, int docId2) {
+		return naiveIndex.indexDirectory(path,pIndex,docId2);
 	}
 
 }

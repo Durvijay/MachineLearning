@@ -1,15 +1,10 @@
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Durvijay Sharma
- * @author Mangesh Adalinge
- * @author Surabhi Dixit
- * 
- *         this is Token Bean file used for storing position and document id of
- *         the tokens
+ * @author Durvijay Sharma this is Token Bean file used for storing position and
+ *         document id of the tokens
  */
 public class TokenDetails {
 	private int docId;
@@ -22,10 +17,6 @@ public class TokenDetails {
 	public TokenDetails(int docID2, int wordPosition) {
 		this.docId = docID2;
 		this.position.add(wordPosition);
-	}
-
-	public TokenDetails() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public int getDocId() {
